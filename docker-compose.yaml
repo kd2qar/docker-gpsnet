@@ -1,0 +1,26 @@
+
+services:
+  gpsnet:
+    container_name: gpsnet
+    image: kd2qar/gpsnet
+    environment:
+      TZ: Americas/New_York
+    build:
+      context: .
+      tags:
+        - kd2qar/gpsnet
+    hostname: gpsnet
+    network_mode: bridge
+    ports:
+      - target: &port 50505
+        host_ip: 192.168.37.80
+        published: *port
+        protocol: "tcp"
+    #command: /bin/bash
+    restart: unless-stopped
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3

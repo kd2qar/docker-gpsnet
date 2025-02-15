@@ -13,4 +13,3 @@ run: up
 shell:
 	docker compose run --build --rm -i --service-ports gpsnet
 
-shell: run

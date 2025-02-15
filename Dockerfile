@@ -1,11 +1,8 @@
 ##
 FROM debian:bullseye-slim as BUILDER
 
-RUN apt-get update; apt-get install -y man manpages man-db manpages-dev less;
-
 ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get -y install --no-install-recommends vim aptitude nmap
+RUN apt-get update
 RUN apt-get -y install --no-install-recommends git
 
 RUN <<BULLSEYE
@@ -56,62 +53,24 @@ apt-get -y install asciidoctor
 
 BULLSEYE
 
-#RUN apt-get -y install gpsd-clients
 RUN apt-get -y install socat ncat
-RUN apt-get -y install --no-install-recommends gpsd-tools 
-#RUN apt-get -y install bsdmainutils
-#RUN apt-get -y install netcat-traditional
-RUN apt-get -y install net-tools
-WORKDIR /gps
-RUN <<-LOCATE
-	apt-get -y install --no-install-recommends locate
-	updatedb
-	LOCATE
 
-WORKDIR /gps
-
-
-COPY <<-ALIASES /root/.bash.aliases
-	alias ls='ls --color'
-	alias ll='ls -Alh'
-	ALIASES
-
-COPY <<-"BASHRC" /root/.bashrc
-	# ~/.bashrc: executed by bash(1) for non-login shells.
-	
-	# Note: PS1 and umask are already set in /etc/profile. You should not
-	# need this unless you want different defaults for root.
-	# PS1='${debian_chroot:+($debian_chroot)}\h:\w\$ '
-	# umask 022
-	
-	# You may uncomment the following lines if you want `ls' to be colorized:
-	export LS_OPTIONS='--color=auto'
-	# eval "$(dircolors)"
-	alias ls='ls --color'
-	alias ll='ls -Alh'
-	# alias l='ls $LS_OPTIONS -lA'
-	#
-	# Some more alias to avoid making mistakes:
-	# alias rm='rm -i'
-	# alias cp='cp -i'
-	# alias mv='mv -i'
-	BASHRC
 FROM debian:bullseye-slim
 
-COPY --from=BUILDER /usr/local/bin/gpspipe /bin/gpspipe
+COPY --from=BUILDER /usr/local/bin/gpspipe /usr/bin/gpspipe
 RUN <<-INSTALL
 	apt-get update;
-	apt-get -y install --no-install-recommends ncat
+	apt-get -y install --no-install-recommends ncat socat
 	rm -rf /var/lib/apt/lists
 	INSTALL
 
 COPY --chmod=755 <<-"CATIT" /bin/catit
 	#!/bin/bash
-	nc -l -k -p 50505 -e "/bin/gpspipe -r roan"
+	nc -l -k -p 50505 -e "/usr/bin/gpspipe -r roan"
 	CATIT
 
-ENTRYPOINT ["nc","-lk","-p","50505","-e","/bin/gpspipe -r roan"]
 
+ENTRYPOINT ["nc","-lk","-p","50505","-e","/usr/bin/gpspipe -r roan"]
 
 
 #CMD ["/bin/bash"]

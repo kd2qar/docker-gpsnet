@@ -6,7 +6,7 @@ build:
 	docker compose build --pull
 
 up:
-	docker compose up --build -d
+	docker compose up --remove-orphans --build --pull always -d
 
 run: up
 

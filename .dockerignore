@@ -1,0 +1,9 @@
+.git
+.gitignore
+[Ii][Gg][Nn][Oo][Rr][Ee]
+Dockerfile*
+LICENSE
+README.md
+Makefile
+*.yaml
+

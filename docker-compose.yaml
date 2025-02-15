@@ -7,6 +7,7 @@ services:
       TZ: Americas/New_York
     build:
       context: .
+      dockerfile: Dockerfile.debian
       tags:
         - kd2qar/gpsnet
     hostname: gpsnet

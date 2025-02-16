@@ -3,13 +3,17 @@ TAG=kd2qar/gpscat
 all: build
 
 build:
-	docker compose build --pull
+	docker compose build --pull --build-arg GPSD_SERVER=roan
 
-up:
-	docker compose up --remove-orphans --build --pull always -d
+up: build
+	docker compose up --remove-orphans -d
 
 run: up
 
-shell:
-	docker compose run --build --rm -i --service-ports gpsnet
+shell: build
+	docker compose run --rm -i --service-ports gpsnet
+
+remove:
+	docker stop gpsnet || true
+	docker rm gpsnet || true
 

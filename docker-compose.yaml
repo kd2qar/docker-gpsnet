@@ -1,20 +1,32 @@
+x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
+  port: &port 50505
+  HOSTIP: &hostip 192.168.37.80
+  GPSD_SERVER: &gpsd_server roan
+  CONTAINER: &container gpsnet
 
 services:
   gpsnet:
-    container_name: gpsnet
-    image: kd2qar/gpsnet
+    container_name: *container
+    image: &image kd2qar/gpsnet
     environment:
       TZ: Americas/New_York
+      PORT: *port
+      HOSTIP: *hostip
+      GPSD_SERVER: *gpsd_server
     build:
       context: .
+      args:
+        GPSD_SERVER: *gpsd_server
+        PORT: *port
+        HOSTIP: *hostip
       dockerfile: Dockerfile
       tags:
-        - kd2qar/gpsnet
-    hostname: gpsnet
+        - *image
+    hostname: *container
     network_mode: bridge
     ports:
-      - target: &port 50505
-        host_ip: 192.168.37.80
+      - target: *port
+        host_ip: *hostip
         published: *port
         protocol: "tcp"
     #command: /bin/bash

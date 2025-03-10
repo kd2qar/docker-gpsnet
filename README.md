@@ -2,9 +2,11 @@
 connects to a gpsd instance and streams the NMEA data via tcp/ip
 This is, primiarily, intented to to be compatible with the Winlink 
 tcp/ip gps option. 
-Under settings-->GPS Position Reports
+Under settings--\>GPS Position Reports
 select "TCP/IP" for the serial port
 Fill in your host IP and port in the "IP Address" and "IP Port" fields.
+![position report sample ](images/GPS_Position_Report.jpg?raw=true "Winlink Position Report")
+
 
 You can also verify that your stream is working by using telnet to connect the the host/port:
 
@@ -24,11 +26,11 @@ port:			the port on the docker host serving NMEA data stream
 
 multiple clients should be able to connect..
 
-
-x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
-  port: &port 50505
-  HOSTIP: &hostip 192.168.1.12
-  GPSD_SERVER: &gpsd_server 192.168.1.15
-  CONTAINER: &container gpsnet
+modify docker-compose.yaml:
+	`x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
+	  port: &port 50505
+	  HOSTIP: &hostip 192.168.1.12
+	  GPSD_SERVER: &gpsd_server 192.168.1.15
+	  CONTAINER: &container gpsnet`
 
 

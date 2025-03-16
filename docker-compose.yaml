@@ -13,6 +13,7 @@ services:
       PORT: *port
       HOSTIP: *hostip
       GPSD_SERVER: *gpsd_server
+      CONTAINER: *container
     build:
       context: .
       args:
@@ -29,6 +30,7 @@ services:
         host_ip: *hostip
         published: *port
         protocol: "tcp"
+
     #command: /bin/bash
     restart: unless-stopped
 

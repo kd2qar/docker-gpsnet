@@ -1,0 +1,13 @@
+#!/bin/bash
+## Container name being used
+CONTAINER=gpsnet
+## Get the host IP address
+HOSTIP=$(docker exec -it ${CONTAINER} /bin/sh -c 'echo -n ${HOSTIP}')
+## Get the port being exposted on the host
+PORT=$(docker exec -it ${CONTAINER} /bin/sh -c 'echo -n ${PORT}')
+## Check the stream from inside the container
+#docker exec -it ${CONTAINER} /bin/sh -c 'nc -z ${HOSTIP} ${PORT} && echo "rc=$?"'
+## Check the stream from the console
+nc -z ${HOSTIP} ${PORT} && echo "rc=$?"
+
+#echo $?

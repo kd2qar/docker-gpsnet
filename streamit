@@ -1,0 +1,10 @@
+#!/bin/bash
+CONTAINER=gpsnet
+HOSTIP=$(docker exec -it ${CONTAINER} /bin/sh -c 'echo -n ${HOSTIP}')
+PORT=$(docker exec -it ${CONTAINER} /bin/sh -c 'echo -n ${PORT}')
+
+echo "curl http://${HOSTIP}:${PORT}"
+curl "http://${HOSTIP}:${PORT}"
+
+#nc   ${HOSTIP} ${PORT}
+#docker exec -it ${CONTAINER} /bin/sh -c 'nc  ${HOSTIP} ${PORT} '

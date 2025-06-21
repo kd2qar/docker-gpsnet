@@ -30,6 +30,10 @@ services:
         host_ip: *hostip
         published: *port
         protocol: "tcp"
+      - target: &port2 50506
+        host_ip: *hostip
+        published: *port2
+        protocol: "tcp"
 
     #command: /bin/bash
     restart: unless-stopped

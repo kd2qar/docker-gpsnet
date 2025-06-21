@@ -1,0 +1,39 @@
+Some manufacturers (and software developers…) do not bother too much when it comes to the checksum in NMEA sentences. Probable reasons for this could be:
+
+The checksum algorithm used is not a very reliable method of checking for transmission errors or invalidating the received data
+There is no standard method in the NMEA protocol defined to ask for a retransmission in case of an invalid checksum
+Instruments do transmit a continuous stream of sentences and the data is normally refreshed every second or faster so you get a retransmit anyway, although with slightly modified data of course
+Yet, since it is better than having no method at all for validating, I do recommend to always transmit a valid checksum and to always check the validity of the checksum of received sentences.
+
+Calculating the checksum is very easy. It is the representation of two hexadecimal characters of an XOR of all characters in the sentence between – but not including – the $ and the * character.
+
+Lets assume the following NMEA sentence:
+
+$GPGLL,5300.97914,N,00259.98174,E,125926,A*28
+
+In this sentence the checksum is the character representation of the hexadecimal value 28. The string that the checksum is calculated over is
+
+GPGLL,5300.97914,N,00259.98174,E,125926,A
+
+To calculate the checksum you parse all characters between $ and * from the NMEA sentence into a new string.  In the examples below the name of this new string is stringToCalculateTheChecksumOver. Then just XOR the first character with the next character, until the end of the string.
+
+Below you find a code example in Java script, VB.Net and C#.
+
+In Java script:
+var checksum = 0;
+for(var i = 0; i < stringToCalculateTheChecksumOver.length; i++) {
+  checksum = checksum ^ stringToCalculateTheChecksumOver.charCodeAt(i);
+}
+
+In C#:
+int checksum = 0;
+for (inti = 0; i < stringToCalculateTheChecksumOver.length; i++){
+checksum ^= Convert.ToByte(sentence[i]);}
+
+In VB.Net:
+Dim checksum as Integer = 0
+For Each Character As Char In stringToCalculateTheChecksumOver 
+          checksum = checksum Xor Convert.ToByte(Character)
+Next 
+
+What is left is to transform the checksum into two hexadecimal characters, and that is it. In VB.Net and C# you can use the ToString function for this, e.g. strChecksum=checksum.ToString(“X2”).

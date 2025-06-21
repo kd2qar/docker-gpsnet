@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#$GPRMC,062044.00,A,3928.10772,N,07917.40170,W,0.035,,310325,,,A*6F
+#$GPVTG,,T,,M,0.035,N,0.065,K,A*26
+#$GPGGA,062044.00,3928.10772,N,07917.40170,W,1,06,1.56,781.1,M,-34.0,M,,*62
+#$GPGSA,A,3,28,25,10,31,02,32,,,,,,,2.91,1.56,2.46*07
+#$GPGSV,3,1,11,01,19,309,12,02,24,282,08,03,00,319,,10,61,154,29*7A
+#$GPGSV,3,2,11,12,26,058,,23,17,145,,25,42,099,18,26,00,192,*73
+#$GPGSV,3,3,11,28,63,235,28,31,35,229,26,32,70,007,27*45
+#$GPGLL,3928.10772,N,07917.40170,W,062044.00,A,A*76
+
+########## HEADER
+
+echo '{"class":"VERSION","release":"3.22","rev":"3.22","proto_major":3,"proto_minor":14}'
+echo '{"class":"DEVICES","devices":[{"class":"DEVICE","path":"/dev/ttyACM0","driver":"NMEA0183","activated":"2025-03-31T06:20:43.075Z","flags":1,"native":0,"bps":9600,"parity":"N","stopbits":1,"cycle":1.00}]}'
+echo '{"class":"WATCH","enable":true,"json":false,"nmea":true,"raw":0,"scaled":false,"timing":false,"split24":false,"pps":false}'
+
+#LAT/LON: 39-28.11N 079-17.42W
+
+POS="3928.10599,N,07917.40599,W"
+SPEED="0.001"
+if [ -f /sbin/apk ]; then
+  DATEFMT="+%H%M%S.00"
+else
+  DATEFMT="+%H%M%S.%2N"
+fi
+
+while [ true ]
+do
+
+UTC="$(date -u ${DATEFMT})"
+
+### RMC
+RMC="GPRMC,${UTC},A,${POS},${SPEED},,$(date -u +%d%m%y),,,A"
+RMCCHK="$(./cknmea "${RMC}")"
+
+#echo "\$${RMC}*${RMCCHK}"
+
+### VTG
+VTG="GPVTG,,T,,M,${SPEED},N,0.0,K,A"
+VTGCHK="$(./cknmea "${VTG}")"
+
+#echo "\$${VTG}*${VTGCHK}"
+
+### GGA
+GGA="GPGGA,$UTC,$POS,1,10,1.2,735.5,M,-34.0,M,,"
+GCACHK="$(./cknmea "${GGA}")"
+
+#echo "\$${GGA}*${GCACHK}"
+
+###### GLL
+GLL="GPGLL,$POS,$UTC,A,A"
+GLLCHK="$(./cknmea "${GLL}")"
+
+#echo "\$${GLL}*${GLLCHK}"
+##############
+
+echo "\$${RMC}*${RMCCHK}"
+echo "\$${VTG}*${VTGCHK}"
+echo "\$${GGA}*${GCACHK}"
+echo "\$${GLL}*${GLLCHK}"
+sleep 1
+done
+

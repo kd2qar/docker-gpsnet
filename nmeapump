@@ -19,6 +19,11 @@ echo '{"class":"WATCH","enable":true,"json":false,"nmea":true,"raw":0,"scaled":f
 
 POS="3928.10599,N,07917.40599,W"
 SPEED="0.001"
+
+## FIELD DAY: WMD 4H
+#POS="3934.02528,N,07914.26234,W"
+#SPEED="0.001"
+
 if [ -f /sbin/apk ]; then
   DATEFMT="+%H%M%S.00"
 else

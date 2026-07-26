@@ -6,17 +6,14 @@ tcp/ip gps option.
 You must have a local server with a gps device running gpsd. Configure the gpsd port to be available on the local network.
 Modify the docker-compose.yaml file to point to the gpsd server and attach to a tcp port on the docker host.
 
-modify docker-compose.yaml:
-
-	x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT  
- 	  # Port other network clients will use to connect to your instance  
-	  port: &port 50505  
-   	  # IP Address of the docker host  
-	  HOSTIP: &hostip 192.168.1.12  
-   	  # ip address of the gpsd server on the local network  
-	  GPSD_SERVER: &gpsd_server 192.168.1.15  
-   	  # The name of the running container
-	  CONTAINER: &container gpsnet  
+create a .env file:
+	# CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
+	# Port other network clients will use to connect to your instance
+	PORT=88888
+	# IP Address of the docker host
+	HOST_IP=192.168.1.12
+	# ip address or name of the gpsd server on the local network
+	GPSD_SERVER=192.168.1.3
 
 You should be able to start your instance using
 
@@ -24,10 +21,10 @@ You should be able to start your instance using
 
 You can also verify that your stream is working by using telnet to connect the the host/port:
 
-For example, if your container is connected to the address 192.168.1.12 on port 50505.
+For example, if your container is connected to the address 192.168.1.12 on port 88888.
 connect to 
 
-	telnet 192.168.1.12 50505
+	telnet 192.168.1.12 88888
 
 and you should see the NMEA data stream.
 

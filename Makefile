@@ -3,7 +3,7 @@ TAG=kd2qar/gpscat
 all: build
 
 build:
-	docker compose build --pull --build-arg GPSD_SERVER=roan
+	docker compose build --pull 
 
 up: build
 	docker compose up --remove-orphans -d

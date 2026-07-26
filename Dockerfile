@@ -4,9 +4,9 @@ ARG GPSD_SERVER
 ARG HOSTIP
 ARG CONTAINER
 
-FROM alpine as base
+FROM alpine AS base
 
-FROM base as builder
+FROM base AS builder
 COPY cknmea.c .
 RUN <<-BUILD
 	apk add gcc build-base
@@ -15,8 +15,6 @@ RUN <<-BUILD
 	BUILD
 
 FROM base
-
-MAINTAINER Mark Vincett kd2qar@gmail.com
 LABEL org.opencontainers.image.authors="Mark Vincett kd2qar@gmail.com"
 
 ENV PORT=${PORT:-50505}

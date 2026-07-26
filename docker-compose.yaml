@@ -1,8 +1,7 @@
 x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
-  port: &port 50505
-  HOSTIP: &hostip 192.168.37.80
-  #GPSD_SERVER: &gpsd_server roan
-  GPSD_SERVER: &gpsd_server 192.168.37.15
+  port: &port ${PORT}
+  HOSTIP: &hostip ${HOST_IP}
+  GPSD_SERVER: &gpsd_server ${GPSD_SERVER}
   CONTAINER: &container gpsnet
 
 services:
@@ -31,7 +30,7 @@ services:
         host_ip: *hostip
         published: *port
         protocol: "tcp"
-      - target: &port2 50506
+      - target: &port2 ${PORT_TEST}
         host_ip: *hostip
         published: *port2
         protocol: "tcp"

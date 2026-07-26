@@ -1,5 +1,6 @@
 .git
 .gitignore
+sample.env
 [Ii][Gg][Nn][Oo][Rr][Ee]
 Dockerfile*
 LICENSE

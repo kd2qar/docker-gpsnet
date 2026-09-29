@@ -1,5 +1,6 @@
 x-anchors: # CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
-  port: &port ${PORT}
+  PORT: &port ${PORT-50505}
+  PORT2: &port_test ${PORT_TEST:-50506}
   HOSTIP: &hostip ${HOST_IP}
   GPSD_SERVER: &gpsd_server ${GPSD_SERVER}
   CONTAINER: &container gpsnet
@@ -14,6 +15,7 @@ services:
       HOSTIP: *hostip
       GPSD_SERVER: *gpsd_server
       CONTAINER: *container
+      PORT_TEST: *port_test
     build:
       context: .
       args:
@@ -30,9 +32,9 @@ services:
         host_ip: *hostip
         published: *port
         protocol: "tcp"
-      - target: &port2 ${PORT_TEST}
+      - target: *port_test
         host_ip: *hostip
-        published: *port2
+        published: *port_test
         protocol: "tcp"
 
     #command: /bin/bash

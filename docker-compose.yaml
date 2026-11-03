@@ -37,7 +37,6 @@ services:
         protocol: "tcp"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
 
     #command: /bin/bash
     restart: unless-stopped

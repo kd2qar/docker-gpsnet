@@ -10,7 +10,6 @@ services:
     container_name: *container
     image: &image kd2qar/gpsnet
     environment:
-      TZ: Americas/New_York
       PORT: *port
       HOSTIP: *hostip
       GPSD_SERVER: *gpsd_server
@@ -36,6 +35,9 @@ services:
         host_ip: *hostip
         published: *port_test
         protocol: "tcp"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
 
     #command: /bin/bash
     restart: unless-stopped

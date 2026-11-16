@@ -74,5 +74,5 @@ COPY --chmod=755 <<-"FAKEIT" /bin/catit3
 #--retries=N (default: 3)
 HEALTHCHECK --interval=200s --retries=5 CMD nc -z -w 1 localhost ${PORT}
 
-ENTRYPOINT ["/bin/catit3"]
+ENTRYPOINT ["/bin/catit2"]
 

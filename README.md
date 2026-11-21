@@ -26,6 +26,10 @@ connect to
 
 	telnet 192.168.1.12 88888
 
+or
+
+	nc 192.168.1.12 88888
+
 and you should see the NMEA data stream.
 
 modify the docker-compose.yaml file to reflect your local network:

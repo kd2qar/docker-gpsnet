@@ -7,6 +7,7 @@ You must have a local server with a gps device running gpsd. Configure the gpsd 
 Modify the docker-compose.yaml file to point to the gpsd server and attach to a tcp port on the docker host.
 
 create a .env file:
+```
 	# CREATE ANCHOR VARIABLES SPECIFIC TO LOCAL ENVIRONMENT
 	# Port other network clients will use to connect to your instance
 	PORT=88888
@@ -14,7 +15,7 @@ create a .env file:
 	HOST_IP=192.168.1.12
 	# ip address or name of the gpsd server on the local network
 	GPSD_SERVER=192.168.1.3
-
+```
 You should be able to start your instance using
 
 	docker compose up
